@@ -2,6 +2,7 @@
 
 
 import numpy as np
+from sklearn.model_selection import train_test_split
 from tqdm import trange
 
 
@@ -36,7 +37,7 @@ def optimize(w, b, X, Y, num_iterations, learning_rate, print_cost=False):
         if i % 100 == 0:
             costs.append(cost)
             if print_cost:
-                print('Cost after iteration %i: %f' % (i, cost))
+                print(f'Cost after iteration {i}: {cost}')
 
     params = {'w': w, 'b': b}
     grads = {'dw': dw, 'db': db}
@@ -62,21 +63,20 @@ def model(X_train, Y_train, X_test, Y_test,
     b = parameters['b']
     Y_prediction_test = predict(w, b, X_test)
     Y_prediction_train = predict(w, b, X_train)
-    print('train accuracy: {} %'.format(
-        100 - np.mean(np.abs(Y_prediction_train - Y_train)) * 100))
-    print('test accuracy: {} %'.format(
-        100 - np.mean(np.abs(Y_prediction_test - Y_test)) * 100))
+    print('train accuracy: {.5f}%'.format(
+        np.mean(np.abs(Y_prediction_train - Y_train))))
+    print('test accuracy: {.5f}%'.format(
+        np.mean(np.abs(Y_prediction_test - Y_test))))
 
-    d = dict(
-        costs=costs,
-        Y_prediction_test=Y_prediction_test,
-        Y_prediction_train=Y_prediction_train,
-        w=w,
-        b=b,
-        learning_rate=learning_rate,
-        num_iterations=num_iterations
-    )
-
+    d = {
+        'costs': costs,
+        'Y_prediction_test': Y_prediction_test,
+        'Y_prediction_train': Y_prediction_train,
+        'w': w,
+        'b': b,
+        'learning_rate': learning_rate,
+        'num_iterations': num_iterations
+    }
     return d
 
 
